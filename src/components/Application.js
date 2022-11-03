@@ -37,10 +37,10 @@ export default function Application(props) {
         <nav className="sidebar__menu">
           <DayList
             days={days}
-            day={day}
+            value={day}
             // setDay passes props to the <DayListItem> children 
             //causing the updates to the "selected" visual state.
-            setDay={setDay}
+            onChange={setDay}
           />
         </nav>
         <img

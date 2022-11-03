@@ -31,18 +31,18 @@ Used by: Application
 
 ##DayListItem
 State:
-Props: name, selected(bool), setDay(fn), spots
+Props: name, selected(bool), setDay(fn), spots, value, onChange
 Used by: DayList
 
 ##InterviewerList
 State:
-Props:
+Props: interviewers(arr), setInterviewer(fn), interviewer(num), value, onChange
 Used by:
 
 ##InterviewerListItem
 State:
-Props:
-Used by:
+Props: id, name, avatar, selected, setInterviewer(fn)
+Used by: InterviewerList
 
 ##Appointment
 State:
@@ -51,35 +51,35 @@ Used by:
 
 ##Appointment/Header
 State:
-Props:
-Used by:
+Props: time(str)
+Used by: Appointment
 
 ##Appointment/Empty
 State:
-Props:
-Used by:
+Props: onAdd(fn)
+Used by: Appointment
 
 ##Appointment/Show
 State:
-Props:
-Used by:
+Props: student(str), interviewer(obj), onEdit(fn), onDelete(fn)
+Used by: Appointment
 
 ##Appointment/Form
 State:
-Props:
+Props: student(str), interviewer(num), interviewers(arr), onSave(fn), onCancel(fn)
 Used by:
 
 ##Appointment/Status
 State:
-Props:
+Props: message(str)
 Used by:
 
 ##Appointment/Error
 State:
-Props:
+Props: message(str), onClose(fn)
 Used by:
 
 ##Appointment/Confirm
 State:
-Props:
+Props: message(str), onConfirm(fn), onCancel(fn)
 Used by:

@@ -83,3 +83,8 @@ Used by:
 State:
 Props: message(str), onConfirm(fn), onCancel(fn)
 Used by:
+
+##Helpers
+Functions: getAppointmentsForDay(used by Application)
+State: 
+Props:

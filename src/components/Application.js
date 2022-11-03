@@ -1,72 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 
 import "components/Application.scss";
 import DayList from 'components/DayList'
 import Appointment from "./Appointment";
-
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
-
-const appointments = {
-  "1": {
-    id: 1,
-    time: "12pm",
-  },
-  "2": {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 3,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  "3": {
-    id: 3,
-    time: "2pm",
-  },
-  "4": {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Archie Andrews",
-      interviewer: {
-        id: 4,
-        name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
-      }
-    }
-  },
-  "5": {
-    id: 5,
-    time: "4pm",
-  }
-};
+import { getAppointmentsForDay } from "../helpers/selectors";
 
 //convert appointments to array
 //map over the array to create a list of Appointment components
 
 export default function Application(props) {
   //will need to use this state in other components
-  const [day, setDay] = useState("Monday")
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
+  });
+
+  useEffect(() => {
+    Promise.all([
+      Axios.get('/api/days'),
+      Axios.get('/api/appointments'),
+      // Axios.get('/api/interviewers')
+    ]).then((all) => {
+      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data }))
+    });
+  }, [])
+
+  const setDay = day => setState({ ...state, day });
+
+  const dailyAppointments = getAppointmentsForDay(state, state.day)
 
   return (
     <main className="layout">
@@ -79,8 +42,8 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            value={day}
+            days={state.days}
+            value={state.day}
             // setDay passes props to the <DayListItem> children 
             //causing the updates to the "selected" visual state.
             onChange={setDay}
@@ -93,7 +56,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {Object.values(appointments).map((appointment) =>
+        {dailyAppointments.map(appointment =>
           <Appointment {...appointment} key={appointment.id} />)}
         {/* Replace this with the schedule elements during the "The Scheduler" activity. */}
       </section>

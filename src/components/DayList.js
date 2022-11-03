@@ -9,7 +9,7 @@ export default function DayList(props) {
       name={day.name}
       spots={day.spots}
       selected={props.value === day.name}
-      setDay={() => props.onChange} />
+      setDay={() => props.onChange(day.name)} />
     //re: selected, this is a boolean. so if 
     //props.day === props.name,
     //then it will render.

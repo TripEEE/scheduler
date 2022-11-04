@@ -4,26 +4,26 @@ import Axios from "axios";
 import "components/Application.scss";
 import DayList from 'components/DayList'
 import Appointment from "./Appointment";
-import { getAppointmentsForDay } from "../helpers/selectors";
-
-//convert appointments to array
-//map over the array to create a list of Appointment components
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors";
 
 export default function Application(props) {
   //will need to use this state in other components
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
-  });
+    appointments: {},
+    interviewers: {}
+  })
+
+  const interviewers = getInterviewersForDay(state, state.day)
 
   useEffect(() => {
     Promise.all([
       Axios.get('/api/days'),
       Axios.get('/api/appointments'),
-      // Axios.get('/api/interviewers')
+      Axios.get('/api/interviewers')
     ]).then((all) => {
-      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data }))
+      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
     });
   }, [])
 
@@ -57,7 +57,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {dailyAppointments.map(appointment =>
-          <Appointment {...appointment} key={appointment.id} />)}
+          <Appointment {...appointment} key={appointment.id} interview={getInterview(state, appointment.interview)} interviewers={interviewers} />)}
         {/* Replace this with the schedule elements during the "The Scheduler" activity. */}
       </section>
     </main>

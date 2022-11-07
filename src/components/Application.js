@@ -31,6 +31,25 @@ export default function Application(props) {
 
   const dailyAppointments = getAppointmentsForDay(state, state.day)
 
+  const bookInterview = (id, interview) => {
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return Axios.put(`/api/appointments/${id}`, { interview })
+      .then(() => {
+        setState({ ...state, appointments }) //updating original state, only if put is successful
+      })
+
+  }
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -57,7 +76,15 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {dailyAppointments.map(appointment =>
-          <Appointment {...appointment} key={appointment.id} interview={getInterview(state, appointment.interview)} interviewers={interviewers} />)}
+          <Appointment
+            {...appointment}
+            key={appointment.id}
+            interview={getInterview(state, appointment.interview)}
+            interviewers={interviewers}
+            bookInterview={bookInterview}
+            id={appointment.id}
+          />
+        )}
         {/* Replace this with the schedule elements during the "The Scheduler" activity. */}
       </section>
     </main>

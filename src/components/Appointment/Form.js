@@ -20,7 +20,7 @@ export default function Form(props) {
   }
 
   const onSubmit = () => {
-    props.onSave(student, interviewer)
+    props.onSave(student, interviewer) //passing student and interviewer (obj) to save in index.js
   }
 
   return (

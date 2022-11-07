@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+import axios from "axios";
 
 import "components/Application.scss";
 import DayList from 'components/DayList'
@@ -19,9 +19,9 @@ export default function Application(props) {
 
   useEffect(() => {
     Promise.all([
-      Axios.get('/api/days'),
-      Axios.get('/api/appointments'),
-      Axios.get('/api/interviewers')
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers')
     ]).then((all) => {
       setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
     });
@@ -43,11 +43,28 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    return Axios.put(`/api/appointments/${id}`, { interview })
+    return axios.put(`/api/appointments/${id}`, { interview })
       .then(() => {
         setState({ ...state, appointments }) //updating original state, only if put is successful
       })
 
+  }
+
+  const cancelInterview = (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios.delete(`/api/appointments/${id}`)
+      .then(() => {
+        setState({ ...state, appointments }) //updating original state, only if put is successful
+      })
   }
 
   return (
@@ -82,6 +99,7 @@ export default function Application(props) {
             interview={getInterview(state, appointment.interview)}
             interviewers={interviewers}
             bookInterview={bookInterview}
+            cancelInterview={cancelInterview}
             id={appointment.id}
           />
         )}

@@ -8,6 +8,7 @@ import InterviewerList from "components/InterviewerList"
 export default function Form(props) {
   const [student, setStudent] = useState(props.student || "")
   const [interviewer, setInterviewer] = useState(props.interviewer || null)
+  const [error, setError] = useState("");
 
   const resetForm = () => {
     setStudent("")
@@ -20,7 +21,15 @@ export default function Form(props) {
   }
 
   const onSubmit = () => {
-    props.onSave(student, interviewer) //passing student and interviewer (obj) to save in index.js
+    if (!student) {
+      setError("Student name cannot be blank");
+      return;
+    }
+    if (!interviewer) {
+      setError("Please select an interviewer");
+      return;
+    }
+    props.onSave(student, interviewer.id) //passing student and interviewer (obj) to save in index.js
   }
 
   return (
@@ -34,9 +43,10 @@ export default function Form(props) {
             placeholder="Enter Student Name"
             value={student} //props.student
             onChange={(event) => setStudent(event.target.value)}
-
+            data-testid={"student-name-input"}
           />
         </form>
+        <section className="appointment__validation">{error}</section>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer} //props.interviewer

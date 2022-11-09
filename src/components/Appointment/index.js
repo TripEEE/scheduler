@@ -26,10 +26,10 @@ export default function Appointment(props) {
     (props.interview ? SHOW : EMPTY)
   );
 
-  const save = (name, interviewer) => {
+  const save = (name, interviewerId) => {
     const interview = {
       student: name,
-      interviewer: interviewer.id
+      interviewer: interviewerId
     }
     transition(SAVING)
     props.bookInterview(props.id, interview)
@@ -55,7 +55,7 @@ export default function Appointment(props) {
         transition(ERROR_DELETE, true)
       })
   }
-
+  console.log("INTERVIEW::", props.interview)
   return (
     <>
       <Header time={props.time} />

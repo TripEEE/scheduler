@@ -23,7 +23,6 @@ export const getInterview = (state, interview) => {
 
 export const getInterviewersForDay = (state, day) => {
   const selectDay = state.days.find((dayOfWeek) => dayOfWeek.name === day) || []
-  console.log(selectDay)
   const { interviewers: dayInterviewers = [] } = selectDay
   return dayInterviewers.map((interviewerId) => state.interviewers[interviewerId])
 

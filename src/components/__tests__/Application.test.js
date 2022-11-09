@@ -1,5 +1,5 @@
 import React from "react";
-import { waitForElement, fireEvent, getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, queryByText } from "@testing-library/react";
+import { waitForElement, fireEvent, getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, queryByText, queryByAltText, getByClass, getByTestId, queryByTestId } from "@testing-library/react";
 
 import { render, cleanup } from "@testing-library/react";
 
@@ -19,7 +19,7 @@ describe("App", () => {
   });
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
-    const { container } = render(<Application />);
+    const { container, debug } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen"))
     const appointments = getAllByTestId(container, "appointment");
@@ -43,5 +43,31 @@ describe("App", () => {
     );
     expect(getByText(day, "no spots remaining")).toBeInTheDocument()
   })
+
+  it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
+
+    const { container, debug } = render(<Application />);
+
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByText(appointment, "Archie Cohen")
+    );
+
+    fireEvent.click(queryByAltText(appointment, "Delete"));
+
+    expect(getByText(appointment, "Are you sure you want to delete?")).toBeInTheDocument();
+
+    fireEvent.click(getByTestId(container, "confirm"));
+
+    expect(getByText(container, "Deleting")).toBeInTheDocument()
+
+    await waitForElement(() => queryByAltText(appointment, "Add"))
+
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
+    expect(getByText(day, "2 spots remaining")).toBeInTheDocument()
+  });
 
 })

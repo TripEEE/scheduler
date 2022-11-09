@@ -31,7 +31,7 @@ export default function Form(props) {
     }
     props.onSave(student, interviewer.id) //passing student and interviewer (obj) to save in index.js
   }
-
+  console.log(interviewer)
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">

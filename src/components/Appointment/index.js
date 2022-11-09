@@ -55,12 +55,8 @@ export default function Appointment(props) {
         transition(ERROR_DELETE, true)
       })
   }
-  console.log("Mentors suck::", props.interview)
-  const interviewerObj = mode === SHOW && props.interviewers.find(interviewer => {
-    console.log(interviewer.id, props.interview)
-    return interviewer.id === props.interview.interviewer.id
-  })
-  console.log(interviewerObj)
+
+  const findInterviewer = (interviewers, interviewerId) => interviewers.find((interviewer) => interviewer.id === interviewerId);
 
   return (
     <>
@@ -84,7 +80,14 @@ export default function Appointment(props) {
         {mode === SHOW && (
           <Show
             student={props.interview ? props.interview.student : 'Not found'}
-            interviewer={props.interview ? interviewerObj : 'Not found'}
+            interviewer={
+              props.interview?.interviewer?.id
+                ? findInterviewer(
+                  props.interviewers,
+                  props.interview.interviewer.id
+                )
+                : 'Not found'
+            }
             onDelete={onDeleteHandler}
             onEdit={() => transition(EDIT)}
           />

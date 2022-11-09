@@ -35,7 +35,6 @@ export default function useApplicationData() {
           spots: day.appointments.map((id) => appointments[id]).filter(appointment => !appointment.interview).length
         }
       }
-      console.log(day)
       return day
     })
   }
@@ -54,10 +53,9 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    return axios.put(`/api/appointments/${id}`, { interview })
-      .then(() => {
-        setState({ ...state, appointments, days: updateSpots(state, appointments) }) //updating original state, only if put is successful
-      })
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      setState({ ...state, appointments, days: updateSpots(state, appointments) }) //updating original state, only if put is successful
+    })
 
   }
 

@@ -55,59 +55,53 @@ export default function Appointment(props) {
         transition(ERROR_DELETE, true)
       })
   }
-  console.log("INTERVIEW::", props.interview)
+
+  const componentsByMode = {
+    EMPTY: <Empty onAdd={() => transition(CREATE)} />,
+    SHOW: <Show
+      student={props.interview?.student}
+      // interviewer={props.interview?.interviewer}
+      interviewer={props.interview?.interviewer}
+      onDelete={onDeleteHandler}
+      onEdit={() => transition(EDIT)}
+    />,
+    CREATE: <Form
+      interviewers={props.interviewers}
+      // interviewer={props.interview?.interviewer}
+      interviewer={props.interview?.interviewer?.id}
+      student={props.interview?.student}
+      onSave={save}
+      onCancel={back}
+    />,
+    SAVING: <Status message={"Saving"} />,
+    CONFIRM: <Confirm
+      message={"Are you sure you want to delete?"}
+      onConfirm={cancel}
+      onCancel={back}
+    />,
+    DELETE: <Status message={"Deleting"} />,
+    EDIT: <Form
+      interviewers={props.interviewers}
+      // interviewer={props.interview?.interviewer}
+      interviewer={props.interview?.interviewer?.id}
+      student={props.interview?.student}
+      onSave={save}
+      onCancel={back}
+    />,
+    ERROR_SAVE: <Error
+      message={"Cannot save! Please contact admin"}
+      onClose={back}
+    />,
+    ERROR_DELETE: <Error
+      message={"Cannot delete! Please contact admin"}
+      onClose={back}
+    />,
+  }
   return (
     <>
       <Header time={props.time} />
-      <article className="appointment">
-        {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-        {mode === SAVING && <Status message={"Saving"} />}
-        {mode === DELETE && <Status message={"Deleting"} />}
-        {mode === ERROR_SAVE && (
-          <Error
-            message={"Cannot save! Please contact admin"}
-            onClose={back}
-          />
-        )}
-        {mode === ERROR_DELETE && (
-          <Error
-            message={"Cannot delete! Please contact admin"}
-            onClose={back}
-          />
-        )}
-        {mode === SHOW && (
-          <Show
-            student={props.interview ? props.interview.student : 'Not found'}
-            interviewer={props.interview ? props.interview.interviewer : 'Not found'}
-            onDelete={onDeleteHandler}
-            onEdit={() => transition(EDIT)}
-          />
-        )}
-        {mode === CONFIRM && (
-          <Confirm
-            message={"Are you sure you want to delete?"}
-            onConfirm={cancel}
-            onCancel={back}
-          />
-        )}
-        {mode === CREATE && (
-          <Form
-            interviewers={props.interviewers}
-            interviewer={props.interview ? props.interview.interviewer : 'Not found'}
-            student={props.interview && props.interview.student}
-            onSave={save}
-            onCancel={back}
-          />)}
-        {mode === EDIT && (
-          <Form
-            interviewers={props.interviewers}
-            interviewer={props.interview ? props.interview.interviewer : 'Not found'}
-            student={props.interview ? props.interview.student : 'Not found'}
-            onSave={save}
-            onCancel={back}
-          />
-
-        )}
+      <article data-testid="appointment" className="appointment">
+        {componentsByMode[mode]}
 
       </article>
     </>

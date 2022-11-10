@@ -39,8 +39,6 @@ export default function Application(props) {
           <DayList
             days={state.days}
             value={state.day}
-            // setDay passes props to the <DayListItem> children 
-            //causing the updates to the "selected" visual state.
             onChange={setDay}
           />
         </nav>
@@ -53,7 +51,6 @@ export default function Application(props) {
       <section className="schedule">
         {dailyAppointments}
         <Appointment />
-        {/* Replace this with the schedule elements during the "The Scheduler" activity. */}
       </section>
     </main>
   );

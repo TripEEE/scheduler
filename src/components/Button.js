@@ -14,19 +14,6 @@ export default function Button(props) {
     "button--danger": props.danger
   })
 
-  // //all buttons have a class of button via buttonClass
-  // let buttonClass = "button"
-
-  // //if props.confirm is true on a Button component,
-  // //add button--confirm to that class
-  // if (props.confirm) {
-  //   buttonClass += " button--confirm"
-  // }
-
-  // if (props.danger) {
-  //   buttonClass += " button--danger"
-  // }
-
   return (
     <button data-testid={props.dataTestId} className={buttonClass} onClick={props.onClick} disabled={props.disabled}>{props.children}</button>
   );

@@ -21,12 +21,6 @@ export default function useApplicationData() {
     });
   }, [])
 
-  //loop through days
-  //keep track of the days
-  //go through appointments array
-  //appointments[id] = each index of the days.appointments array
-  //if appointments[id] = null
-  //spot ++
   const updateSpots = (state, appointments) => {
     return state.days.map((day) => {
       if (day.name === state.day) {

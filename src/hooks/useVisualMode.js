@@ -16,9 +16,7 @@ export default function useVisualMode(initial) {
     if (history.length < 2) {
       return
     }
-
     setHistory(history.slice(0, -1))
-
   }
 
   const mode = history[history.length - 1]

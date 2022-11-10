@@ -2,6 +2,7 @@ import React from "react";
 import { waitForElement, fireEvent, getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, queryByText, queryByAltText, getByClass, getByTestId, queryByTestId } from "@testing-library/react";
 
 import { render, cleanup } from "@testing-library/react";
+import axios from "axios";
 
 import Application from "components/Application";
 
@@ -69,5 +70,72 @@ describe("App", () => {
     );
     expect(getByText(day, "2 spots remaining")).toBeInTheDocument()
   });
+
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+    const { container, debug } = render(<Application />);
+
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    const editButtonElement = getByTestId(container, "edit");
+
+    fireEvent.click(editButtonElement)
+
+    const editStudentInput = getByTestId(container, "student-name-input")
+
+    fireEvent.change(editStudentInput, {
+      target: { value: "Lydia Miller-Jones" }
+    });
+
+    fireEvent.click(getByTestId(container, "saveButton"))
+
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
+    expect(getByText(day, "1 spot remaining")).toBeInTheDocument()
+  })
+
+  it("shows the save error when failing to save an appointment", async () => {
+    const { container, debug } = render(<Application />);
+
+    axios.put.mockRejectedValueOnce();
+
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    const editButtonElement = getByTestId(container, "edit");
+
+    fireEvent.click(editButtonElement)
+
+    const editStudentInput = getByTestId(container, "student-name-input")
+
+    fireEvent.change(editStudentInput, {
+      target: { value: "Lydia Miller-Jones" }
+    });
+
+    fireEvent.click(getByTestId(container, "saveButton"))
+
+    const errorCard = await waitForElement(() => getByTestId(container, "error"))
+
+    expect(errorCard).toBeInTheDocument()
+  });
+
+  it("shows the delete error when failing to delete an existing appointment", async () => {
+    const { container, debug } = render(<Application />);
+
+    axios.delete.mockRejectedValueOnce();
+
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    const deleteButtonElement = getByTestId(container, "delete");
+
+    fireEvent.click(deleteButtonElement)
+
+    const deleteStudentInput = getByTestId(container, "confirm")
+
+    fireEvent.click(deleteStudentInput)
+
+    const errorCard = await waitForElement(() => getByTestId(container, "error"))
+
+    expect(errorCard).toBeInTheDocument()
+  })
 
 })

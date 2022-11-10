@@ -21,3 +21,10 @@ npm test
 ```sh
 npm run storybook
 ```
+## Images
+
+!["Default Page"](file:///Users/evan/lighthouse/scheduler/docs/Scheduler%20Default%20Page.png)
+
+!["New Interview"](file:///Users/evan/lighthouse/scheduler/docs/Scheduler%20Default%20Page.png)
+
+!["Confirm Changes"](file:///Users/evan/lighthouse/scheduler/docs/Scheduler%20Confirm%20Change.png)

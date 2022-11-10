@@ -23,8 +23,8 @@ npm run storybook
 ```
 ## Images
 
-!["Default Page"](file:///Users/evan/lighthouse/scheduler/docs/Scheduler%20Default%20Page.png)
+!["Default Page"](https://github.com/TripEEE/scheduler/blob/master/docs/Scheduler%20Default%20Page.png?raw=true)
 
-!["New Interview"](file:///Users/evan/lighthouse/scheduler/docs/Scheduler%20Default%20Page.png)
+!["New Interview"](https://github.com/TripEEE/scheduler/blob/master/docs/Scheduler%20New%20Interview.png?raw=true)
 
-!["Confirm Changes"](file:///Users/evan/lighthouse/scheduler/docs/Scheduler%20Confirm%20Change.png)
+!["Confirm Changes"](https://github.com/TripEEE/scheduler/blob/master/docs/Scheduler%20Confirm%20Change.png?raw=true)
